@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Reader</title>
+</head>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&display=swap');
+
+    p{
+      color: #A32117;
+      text-align: left;
+      font-weight: normal;
+      margin-top: 30px;
+      font-family: 'Rubik Wet Paint', cursive;
+      font-size: 2em;
+     }
+     body{
+        background-image: url(csv.png);
+        background-image: sticky;
+     }
+
+    </style>
+
+<body>
+    <form id="csvForm">
+        <p>Enter CSV URL containing your CV:</p>
+        <input type="text" id="csvLink">
+        <button type="submit">Fetch</button>
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+        function parseCSV(text) {
+            const rows = text.split('\n');
+            return rows.map(row => row.split(','));
+        }
+
+        async function fetchCSV(event) {
+            event.preventDefault();
+
+            const url = document.getElementById("csvLink").value;
+
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                const data = parseCSV(text);
+
+                let html = "<center><table>";
+
+                data.forEach(row => {
+                    html += "<tr>";
+                    row.forEach((cell, index) => {
+                        if (index === 0) {
+                            html += `<td style="text-align:left;"><b>${cell}</b></td>`;
+                        } else {
+                            html += `<td style="text-align:center;">-${cell}</td>`;
+                        }
+                    });
+                    html += "</tr>";
+                });
+
+                html += "</table></center>";
+
+                document.getElementById("output").innerHTML = html;
+            } catch (error) {
+                console.error("Error fetching CSV:", error);
+            }
+        }
+
+        document.getElementById("csvForm").addEventListener("submit", fetchCSV);
+    </script>
+</body>
+
+</html>

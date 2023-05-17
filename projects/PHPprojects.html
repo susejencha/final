@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+
+<title>Susej Enchautegui</title>
+<link rel="stylesheet" type = "text/css" href="stylesheetPR.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<header>
+
+<h1>PHP</h1>
+<p>project 1,2 and 3</p>
+<p><</p>
+
+</header>
+<body>
+
+<form id="numberForm" action="process.php" method="post">
+    <label for="num1">Number 1:</label>
+    <input type="number" name="num1" id="num1" required><br>
+    <label for="num2">Number 2:</label>
+    <input type="number" name="num2" id="num2" required><br>
+    <label for="num3">Number 3:</label>
+    <input type="number" name="num3" id="num3" required><br>
+    <button type="submit">Calculate</button>
+  </form>
+  <div id="results"></div>
+  <script>
+    $("#numberForm").submit(function(event) {
+      event.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: "process.php",
+        data: $(this).serialize(),
+        dataType: "json",
+        success: function(response) {
+          $("#results").html(
+            "GCD: " + response.gcd + "<br>" +
+            "LCM: " + response.lcm + "<br>" +
+            "Square root of the sum: " + response.sqrt_sum.toFixed(2)
+          );
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

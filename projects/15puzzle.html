@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>15 Puzzle Game</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&display=swap');
+		#puzzle {
+			display: flex;
+			flex-wrap: wrap;
+			width: 300px;
+			height: 300px;
+			margin: 0 auto;
+			border: 20px solid black;
+			border-radius:25px;
+			font-size: 24px;
+			font-weight: bold;
+			font-family: "Lucida Console", "Courier New", monospace;
+			text-align: center;
+			user-select: none;
+			background-color: #A32117;
+		}
+		#puzzle div {
+			width: 75px;
+			height: 75px;
+			line-height: 75px;
+			cursor: crosshair;
+		}
+		#puzzle div.empty {
+			background-color: none;
+		}
+
+		body{
+			background-image: url(15puzzle.jpg);
+			margin: 0 10%;
+		}
+		h1, h2{
+			text-align: center;
+			font-family: 'Rubik Wet Paint', cursive;
+			color: #A32117;
+		}
+	</style>
+</head>
+<header>
+          <h1>♥ 15 Puzzle by Susej ♥</h1>         
+     </header>
+<body>
+	<div id="puzzle">
+		<div>1</div><div>2</div><div>3</div><div>4</div>
+		<div>5</div><div>6</div><div>7</div><div>8</div>
+		<div>9</div><div>10</div><div>11</div><div>12</div>
+		<div>13</div><div>14</div><div>15</div><div class="empty"></div>
+	</div>
+
+	<script>
+		// Randomly shuffle the puzzle pieces
+		let pieces = Array.from(document.querySelectorAll('#puzzle div:not(.empty)'));
+		let empty = document.querySelector('#puzzle div.empty');
+
+		function shuffle() {
+			for (let i = pieces.length - 1; i > 0; i--) {
+				let j = Math.floor(Math.random() * (i + 1));
+				let temp = pieces[i].innerHTML;
+				pieces[i].innerHTML = pieces[j].innerHTML;
+				pieces[j].innerHTML = temp;
+			}
+		}
+
+		shuffle();
+
+		// Add click event listener to puzzle pieces
+		for (let i = 0; i < pieces.length; i++){
+			pieces[i].addEventListener('click', function(){
+				// Check if the clicked piece is adjacent to the empty space
+				if (this.previousElementSibling === empty || this.nextElementSibling === empty || this.parentNode.previousElementSibling || this.parentNode.previousElementSibling.children[i].classList.contains('empty') || this.parentNode.nextElementSibling || this.parentNode.nextElementSibling.children[i].classList.contains('empty')) {
+					// Swap the clicked piece with the empty space
+					empty.innerHTML = this.innerHTML;
+					this.innerHTML = '';
+					empty.classList.remove('empty');
+					this.classList.add('empty');
+					empty = this;
+				}
+
+				// Check if the puzzle is solved
+				if (pieces.every((piece, index) => piece.innerHTML === index + 1)) {
+					alert('Congratulations, you solved the puzzle!');
+				}
+			});
+		}
+	</script>
+	<h2>
+		<p>♥</p>
+	</h2>
+</body>
+</html>

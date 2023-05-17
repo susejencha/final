@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+    <title>JavaScript URL Parameter Check</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&display=swap');
+
+    h1{
+	  color: #A32117;
+ 	  text-align: center;
+	  font-weight: normal;
+	  margin-top: 30px;
+	  font-family: 'Rubik Wet Paint', cursive;
+	  font-size: 6em;
+     }
+     body{
+     	background-image: url(url.jpg);
+		background-image: sticky;
+     }
+
+    </style>
+</head>
+<body>
+    <div id="message"></div>
+
+    <script>
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            let results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        window.onload = function() {
+            let word = getUrlParameter('word');
+            let messageElement = document.getElementById('message');
+
+            if (word === 'black') {
+                messageElement.innerHTML = '<h1>great</h1>';
+            } else {
+                messageElement.innerHTML = '<h1>Add "?word=black" to the URL.</h1>';
+            }
+        };
+    </script>
+</body>
+</html>
